@@ -89,7 +89,6 @@ export class DscService {
     const url = `/profile`;
 
     const headers = this.setHeaders(token);
-    console.log(headers);
     const { data } = await firstValueFrom(
       await this.httpService.get(url, { headers }).pipe(
         catchError((err) => {
