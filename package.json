@@ -1,6 +1,6 @@
 {
   "name": "da-dsc-auth",
-  "version": "2.0.1",
+  "version": "2.1.1",
   "description": "This is a package for calling to DSC service (For internal)",
   "main": "dist/index",
   "type": "dist/index",

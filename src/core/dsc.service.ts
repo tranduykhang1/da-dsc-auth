@@ -115,6 +115,19 @@ export class DscService {
     return data;
   }
 
+  async forgotPassword(email: string): Promise<any> {
+    const url = `/forgot-password`;
+
+    const { data } = await firstValueFrom(
+      await this.httpService.post(url, { email }).pipe(
+        catchError((err) => {
+          throw err?.response?.data;
+        })
+      )
+    );
+    return data;
+  }
+
   async refreshToken(token: string): Promise<any> {
     const url = `/refresh-token`;
 

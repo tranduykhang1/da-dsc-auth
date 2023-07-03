@@ -179,4 +179,23 @@ describe("DscService", () => {
       }
     });
   });
+
+  describe("Forgot password functions", () => {
+    test("Refresh token with valid email", async () => {
+      // below email has been created
+      const res: any = await service.forgotPassword("boo-oong1@mailinator.com");
+      const { statusCode, message } = res;
+
+      expect(statusCode).toEqual(HttpStatusCode.Created);
+      expect(message).toContain("Check your email!");
+    });
+
+    test("Refresh token with invalid email", async () => {
+      try {
+        await service.forgotPassword("test-email@test.com");
+      } catch (err: any) {
+        expect(err.statusCode).toEqual(HttpStatusCode.BadRequest);
+      }
+    });
+  });
 });
