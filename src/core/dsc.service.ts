@@ -115,6 +115,32 @@ export class DscService {
     return data;
   }
 
+  async updateProfileById(userId: string, input: IUpdateProfile): Promise<any> {
+    const url = `/${userId}/profile`;
+
+    const { data } = await firstValueFrom(
+      await this.httpService.patch(url, input).pipe(
+        catchError((err) => {
+          throw err?.response?.data;
+        })
+      )
+    );
+    return data;
+  }
+
+  async deleteUserById(userId: string): Promise<any> {
+    const url = `/${userId}`;
+
+    const { data } = await firstValueFrom(
+      await this.httpService.delete(url).pipe(
+        catchError((err) => {
+          throw err?.response?.data;
+        })
+      )
+    );
+    return data;
+  }
+
   async forgotPassword(email: string): Promise<any> {
     const url = `/forgot-password`;
 

@@ -16,7 +16,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "exclude": ["node_modules", "dist", "test"],
+  "exclude": ["node_modules", "dist", "test", "src/core/dsc.spec.ts"],
 
-  "include": ["src/**/*", "src/core/dsc.spec.ts"]
+  "include": ["src/**/*"]
 }

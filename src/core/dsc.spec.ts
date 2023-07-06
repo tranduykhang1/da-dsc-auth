@@ -5,7 +5,7 @@ import { DscModule } from "./dsc.module";
 import { DscService } from "./dsc.service";
 
 const appToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJ1c2VyMUB1c2VyLmNvbSIsInRvayI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUoxYVdRaU9pSXhNak0wTlRZM09Ea3dJbjAuT05JaEZKS3pJclc4aWpReW0zbV9iZWwtQngxWGNiT0liQVVGSlpNX3FyZyJ9.2hczY1AEFFv9hyxFqwlFfdMR555E7JW1nfJhc5i_wKE",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJ1c2VyMUB1c2VyLmNvbSIsInRvayI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUoxYVdRaU9pSjFjMlZ5TVVCMWMyVnlMbU52YlNKOS5LUTlPXzU1YzdHZUNNUlhWa3k3eFJkYlJzN1Jyci1SbUhrQmdMQ1ZBUUxnIn0.L-XfeyFjHDbOJsaEVYdALNzbcsNZjgiAs0OUAmpg--E",
   invalidAppToken =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJ1c2VyMUB1c2VyLmNvbSIsInRvayI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUoxYVdRaU9pSXhNak0wTlRZM09Ea3dJbjAuT05JaEZKS3pJclc4aWpReW0zbV9iZWwtQngxWGNiT0liQVVGSlpNX3FyZyJ9.2hczY1AEFFv9hyxFqwlFfdMR555E7JW1nfJhc5i_wKG",
   googleToken =
@@ -17,7 +17,7 @@ const appToken =
     "qGulbUwj97Soti5wBSQP0-WHfLHSazTBmx5_O-LHCiolkAAAAYjC7_31";
 
 const newAccount = {
-  email: `test-dsc@test.com`,
+  email: `test-dsc-${Math.random()}@test.com`,
   password: "123123123",
   displayName: `Test dsc-auth`,
 };
@@ -134,13 +134,15 @@ describe("DscService", () => {
     });
   });
 
-  describe("User profile function", () => {
+  describe("User management function", () => {
+    let userId: string;
     test("Get logged user profile", async () => {
       const res: any = await service.getProfile(_token);
       const { data, statusCode, message } = res;
 
       expect(statusCode).toEqual(HttpStatusCode.Ok);
       expect(message).toContain("Success");
+      userId = data._id;
       expect(data._id).toBeTruthy();
       expect(data.displayName).toBeTruthy();
     });
@@ -157,6 +159,29 @@ describe("DscService", () => {
       expect(statusCode).toEqual(HttpStatusCode.Ok);
       expect(message).toContain("Success");
       expect(data.displayName).toContain(updateDto.displayName);
+    });
+
+    test("Update user profile by ID", async () => {
+      const updateDto: IUpdateProfile = {
+        displayName: "Dsc new name",
+      };
+
+      const res: any = await service.updateProfileById(userId, updateDto);
+
+      const { statusCode, message, data } = res;
+
+      expect(statusCode).toEqual(HttpStatusCode.Ok);
+      expect(message).toContain("Success");
+      expect(data.displayName).toContain(updateDto.displayName);
+    });
+
+    test("Delete user by ID", async () => {
+      const res: any = await service.deleteUserById(userId);
+
+      const { statusCode, message } = res;
+
+      expect(statusCode).toEqual(HttpStatusCode.Ok);
+      expect(message).toContain("Success");
     });
   });
 
